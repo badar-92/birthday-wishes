@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Badar!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.5s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Background Celebration Elements */
+        .celebration-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .celebration-element {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.7;
+            animation: falling linear infinite;
+        }
+        
+        .heart { color: #ff4d6d; font-size: 24px; }
+        .rose { color: #ff3366; font-size: 28px; }
+        .star { color: #fff44f; font-size: 20px; }
+        .balloon { color: #ff6b6b; font-size: 32px; }
+        .confetti-piece { 
+            width: 10px; 
+            height: 10px; 
+            border-radius: 2px; 
+        }
+        
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            overflow: hidden;
+            z-index: 20;
+        }
+        
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* Page 1: Landing Page */
+        .page1 {
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.8) 0%, rgba(250, 208, 196, 0.8) 100%);
+            text-align: center;
+        }
+        
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            color: #d32f2f;
+            text-shadow: 3px 3px 0 rgba(255, 215, 0, 0.7);
+            margin-bottom: 20px;
+            transform: translateY(-50px);
+            opacity: 0;
+            animation: fadeInDown 1s 0.5s forwards;
+        }
+        
+        .message {
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #5a3e36;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 1s 1s forwards;
+        }
+        
+        .btn {
+            padding: 15px 50px;
+            font-size: 1.4rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(to right, #e91e63, #ff5722);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.5);
+            font-weight: bold;
+            transform: scale(0);
+            animation: scaleIn 0.8s 1.5s forwards;
+            position: relative;
+            overflow: hidden;
+            z-index: 30;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.7);
+        }
+        
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover:after {
+            left: 100%;
+        }
+        
+        /* Page 2: Mirror of Memories */
+        .page2 {
+            background: linear-gradient(135deg, rgba(93, 105, 190, 0.8) 0%, rgba(200, 159, 235, 0.8) 100%);
+        }
+        
+        .mirror-frame {
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            z-index: 25;
+        }
+        
+        .mirror-frame:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            z-index: 1;
+        }
+        
+        .mirror-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+        
+        .unlock-btn {
+            padding: 12px 40px;
+            font-size: 1.3rem;
+            z-index: 2;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+        }
+        
+        /* Page 3: Gallery */
+        .page3 {
+            background: linear-gradient(135deg, rgba(0, 205, 172, 0.8) 0%, rgba(141, 218, 213, 0.8) 100%);
+        }
+        
+        .gallery-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            z-index: 25;
+        }
+        
+        .gallery {
+            width: 100%;
+            height: 500px;
+            display: flex;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #e91e63;
+            z-index: 10;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .prev {
+            left: 20px;
+        }
+        
+        .next {
+            right: 20px;
+        }
+        
+        .gallery-next-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, #2196f3, #21cbf3);
+            z-index: 30;
+        }
+        
+        /* Page 4: Cake Cutting */
+        .page4 {
+            background: linear-gradient(135deg, rgba(255, 107, 156, 0.8) 0%, rgba(185, 103, 255, 0.8) 100%);
+        }
+        
+        .cake-container {
+            position: relative;
+            margin-bottom: 40px;
+            z-index: 25;
+        }
+        
+        .cake {
+            width: 250px;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        
+        .cake:hover {
+            transform: scale(0.95);
+        }
+        
+        .cake-base {
+            position: absolute;
+            bottom: 0;
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(to bottom, #f8c4d8, #e6a8c5);
+            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cake-middle {
+            position: absolute;
+            bottom: 100px;
+            width: 160px;
+            height: 80px;
+            background: linear-gradient(to bottom, #f9d7e3, #f1b9d1);
+            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cake-top {
+            position: absolute;
+            bottom: 170px;
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(to bottom, #fce8f0, #f9d7e3);
+            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .candle {
+            position: absolute;
+            bottom: 220px;
+            width: 10px;
+            height: 40px;
+            background: #ff5722;
+            border-radius: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .flame {
+            position: absolute;
+            bottom: 260px;
+            width: 15px;
+            height: 30px;
+            background: #ffeb3b;
+            border-radius: 50% 50% 20% 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px #ff9800;
+            animation: flicker 0.8s infinite alternate;
+        }
+        
+        .cut-line {
+            position: absolute;
+            width: 220px;
+            height: 10px;
+            background: rgba(0,0,0,0.2);
+            left: 50%;
+            transform: translateX(-50%);
+            top: 150px;
+            display: none;
+        }
+        
+        .cake-cut-btn {
+            opacity: 0;
+            transform: translateY(30px);
+            z-index: 30;
+        }
+        
+        /* Page 5: Dark Page */
+        .page5 {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+        }
+        
+        .light-text {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            opacity: 0.8;
+            z-index: 25;
+        }
+        
+        .light-btn {
+            background: linear-gradient(to right, #ffeb3b, #ff9800);
+            color: #000;
+            z-index: 30;
+        }
+        
+        /* Page 6: Final Message */
+        .page6 {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.8) 0%, rgba(75, 0, 130, 0.8) 100%);
+            padding: 50px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .birthday-message-box {
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            border-radius: 20px;
+            padding: 20px 40px;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            transform: translateY(0);
+            animation: float 3s ease-in-out infinite;
+            border: 3px solid rgba(255,255,255,0.3);
+            z-index: 25;
+        }
+        
+        .birthday-message-box h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .wishes-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            max-height: 50vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            text-align: left;
+            z-index: 25;
+        }
+        
+        .wishes-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .wishes-box::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .wishes-box::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #8A2BE2, #4B0082);
+            border-radius: 10px;
+        }
+        
+        .message-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .message-content p {
+            margin-bottom: 20px;
+        }
+        
+        .signature {
+            text-align: right;
+            font-style: italic;
+            color: #8A2BE2;
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .music-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #FF416C;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 30;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes flicker {
+            from {
+                opacity: 1;
+                height: 30px;
+            }
+            to {
+                opacity: 0.8;
+                height: 35px;
+            }
+        }
+        
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3.2rem;
+            }
+            
+            .message {
+                font-size: 1.4rem;
+            }
+            
+            .mirror-title {
+                font-size: 2.3rem;
+            }
+            
+            .gallery {
+                height: 350px;
+            }
+            
+            .birthday-message-box {
+                padding: 15px 25px;
+                width: 90%;
+            }
+            
+            .birthday-message-box h2 {
+                font-size: 2.3rem;
+            }
+            
+            .wishes-box {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .message-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Celebration Background -->
+    <div class="celebration-bg" id="celebration-bg"></div>
+    
+    <!-- Page 1: Landing Page -->
+    <div class="page page1 active" id="page1">
+        <h1 class="title">Happy Birthday, Badar💞!</h1>
+        <p class="message">"Every moment with you is a gift, and today we celebrate the greatest gift of all - YOU!🌹"</p>
+        <button class="btn" id="begin-btn">Begin Your Surprise!🎁</button>
+    </div>
+    
+    <!-- Page 2: Mirror of Memories -->
+    <div class="page page2" id="page2">
+        <div class="mirror-frame">
+            <h2 class="mirror-title">Mirror of Memories</h2>
+            <button class="btn unlock-btn" id="unlock-btn">Click to Unlock Memories</button>
+        </div>
+    </div>
+    
+    <!-- Page 3: Gallery -->
+    <div class="page page3" id="page3">
+        <div class="gallery-container">
+            <div class="gallery" id="gallery">
+                <img src="https://live.staticflickr.com/65535/54644095114_6c014417ab_n.jpg" alt="Memory 1">
+                <img src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Memory 2">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Memory 3">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Memory 4">
+                <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Memory 5">
+            </div>
+            <div class="gallery-nav prev" id="prev-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="gallery-nav next" id="next-btn"><i class="fas fa-chevron-right"></i></div>
+            <button class="btn gallery-next-btn" id="gallery-next-btn">Next Page</button>
+        </div>
+    </div>
+    
+    <!-- Page 4: Cake Cutting -->
+    <div class="page page4" id="page4">
+        <h2 class="title">Let's Cut the Cake!</h2>
+        <div class="cake-container">
+            <div class="cake" id="cake">
+                <div class="cake-base"></div>
+                <div class="cake-middle"></div>
+                <div class="cake-top"></div>
+                <div class="candle"></div>
+                <div class="flame"></div>
+                <div class="cut-line" id="cut-line"></div>
+            </div>
+        </div>
+        <button class="btn cake-cut-btn" id="cake-cut-btn">Continue Celebration</button>
+    </div>
+    
+    <!-- Page 5: Dark Page -->
+    <div class="page page5" id="page5">
+        <h2 class="light-text">Light Up Your Life</h2>
+        <button class="btn light-btn" id="light-btn">Turn the Lights On</button>
+    </div>
+    
+    <!-- Page 6: Final Message -->
+    <div class="page page6" id="page6">
+        <div class="birthday-message-box">
+            <h2>Happy Birthday, Badar💞!</h2>
+        </div>
+        
+        <div class="wishes-box">
+            <div class="message-content">
+                <p>On this special day, I want to take a moment to celebrate not just your birthday, but the incredible person you are. Your presence lights up every room you enter, just like how you've lit up our lives.</p>
+                
+                <p>Your kindness, wisdom, and beautiful spirit inspire everyone around you. You have this magical way of making ordinary moments feel extraordinary, and today is all about celebrating the magic that is uniquely you.</p>
+                
+                <p>May this new year of your life be filled with endless joy, beautiful surprises, and all the happiness your heart can hold. You deserve nothing but the very best that life has to offer.</p>
+                
+                <p>May your days be filled with laughter and your nights with sweet dreams. May your journey ahead be paved with success and your heart with contentment.</p>
+                
+                <p>May you always have reasons to smile, people to love, and dreams that inspire you. May your health be strong, your friendships true, and your spirit forever young.</p>
+                
+                <p>May challenges become opportunities and obstacles become stepping stones. May you find strength in difficult times and gratitude in every moment.</p>
+                
+                <p>May your passions flourish and your talents shine. May you continue to grow, learn, and become the best version of yourself.</p>
+                
+                <p>May love surround you, peace calm you, and joy fill your heart. May this year bring you closer to your dreams and fill your life with beautiful memories.</p>
+                
+                <p>Wishing you the most wonderful birthday! 🎂✨</p>
+                
+                <p class="signature">With love and warm wishes,<br>Someone who cares about you 💕</p>
+            </div>
+        </div>
+        
+        <div class="music-btn" id="music-btn">
+            <i class="fas fa-music"></i>
+        </div>
+    </div>
+    
+    <audio id="birthday-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // Create continuous celebration background
+        function createCelebrationBackground() {
+            const container = document.getElementById('celebration-bg');
+            const types = ['heart', 'rose', 'star', 'balloon', 'confetti'];
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            // Function to create a single celebration element
+            function createElement() {
+                const element = document.createElement('div');
+                const type = types[Math.floor(Math.random() * types.length)];
+                const size = 20 + Math.random() * 30;
+                const leftPos = Math.random() * 100;
+                const duration = 5 + Math.random() * 10;
+                const delay = Math.random() * 5;
+                
+                element.className = `celebration-element ${type}`;
+                
+                if (type === 'heart') {
+                    element.innerHTML = '❤️';
+                } else if (type === 'rose') {
+                    element.innerHTML = '🌹';
+                } else if (type === 'star') {
+                    element.innerHTML = '⭐';
+                } else if (type === 'balloon') {
+                    element.innerHTML = '🎈';
+                } else { // confetti
+                    element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    element.style.width = `${size}px`;
+                    element.style.height = `${size}px`;
+                }
+                
+                element.style.left = `${leftPos}%`;
+                element.style.fontSize = `${size}px`;
+                element.style.animationDuration = `${duration}s`;
+                element.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(element);
+                
+                // Remove element after animation completes
+                setTimeout(() => {
+                    element.remove();
+                }, duration * 1000);
+            }
+            
+            // Create elements continuously
+            setInterval(createElement, 300);
+            
+            // Create initial elements
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createElement, i * 150);
+            }
+        }
+        
+        // Page navigation
+        const pages = document.querySelectorAll('.page');
+        const beginBtn = document.getElementById('begin-btn');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const galleryNextBtn = document.getElementById('gallery-next-btn');
+        const cake = document.getElementById('cake');
+        const cakeCutBtn = document.getElementById('cake-cut-btn');
+        const lightBtn = document.getElementById('light-btn');
+        const musicBtn = document.getElementById('music-btn');
+        const birthdayMusic = document.getElementById('birthday-music');
+        
+        // Gallery navigation
+        const gallery = document.getElementById('gallery');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentIndex = 0;
+        
+        // Move to next page
+        function goToPage(pageNumber) {
+            pages.forEach(page => page.classList.remove('active'));
+            pages[pageNumber].classList.add('active');
+            
+            // Play music on final page
+            if(pageNumber === 5) {
+                birthdayMusic.play();
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+        
+        // Event listeners for navigation
+        beginBtn.addEventListener('click', () => goToPage(1));
+        unlockBtn.addEventListener('click', () => goToPage(2));
+        galleryNextBtn.addEventListener('click', () => goToPage(3));
+        lightBtn.addEventListener('click', () => goToPage(5));
+        
+        // Cake cutting interaction
+        let cakeCut = false;
+        cake.addEventListener('click', () => {
+            if(!cakeCut) {
+                const cutLine = document.getElementById('cut-line');
+                cutLine.style.display = 'block';
+                cakeCut = true;
+                
+                // Create celebration effect
+                createBalloons(20);
+                createConfetti(50);
+                
+                // Show the continue button
+                cakeCutBtn.style.opacity = '1';
+                cakeCutBtn.style.transform = 'translateY(0)';
+            }
+        });
+        
+        cakeCutBtn.addEventListener('click', () => goToPage(4));
+        
+        // Music toggle
+        let isPlaying = false;
+        musicBtn.addEventListener('click', () => {
+            if(isPlaying) {
+                birthdayMusic.pause();
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                birthdayMusic.play();
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // Gallery navigation
+        function showImage(index) {
+            gallery.style.transform = `translateX(-${index * 100}%)`;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : 4;
+            showImage(currentIndex);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex < 4) ? currentIndex + 1 : 0;
+            showImage(currentIndex);
+        });
+        
+        // Celebration effects
+        function createConfetti(count) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            for(let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'celebration-element confetti-piece';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = (Math.random() * 15 + 5) + 'px';
+                confetti.style.height = (Math.random() * 15 + 5) + 'px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                document.getElementById('celebration-bg').appendChild(confetti);
+                
+                // Animate confetti
+                confetti.style.animation = `floatUp ${Math.random() * 3 + 2}s linear forwards`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        function createBalloons(count) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            for(let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'celebration-element balloon';
+                balloon.innerHTML = '🎈';
+                balloon.style.color = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.fontSize = (Math.random() * 30 + 40) + 'px';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.bottom = '-100px';
+                
+                document.getElementById('celebration-bg').appendChild(balloon);
+                
+                // Animate balloon
+                const duration = Math.random() * 8 + 6;
+                balloon.style.animation = `falling ${duration}s linear forwards`;
+                balloon.style.animationDelay = '0s';
+                
+                // Remove after animation
+                setTimeout(() => {
+                    balloon.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Initialize celebration background and music
+        window.addEventListener('load', () => {
+            createCelebrationBackground();
+        });
+    </script>
+</body>
+</html>
