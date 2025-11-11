@@ -40,10 +40,7 @@ Share the surprise with the birthday person!
 Changing Images
 Replace the image files in the gallery section:
 
-html
-<img src="./badar 2.jpg" alt="Memory 1">
-<img src="./badar 1.jpg" alt="Memory 2">
-<!-- Add your own images -->
+
 Personalizing the Message
 Edit the birthday message in the final page section.
 
