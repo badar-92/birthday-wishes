@@ -50,14 +50,26 @@ Update the CSS color variables in the <style> section to match your theme.
 📁 File Structure
 text
 birthday-surprise/
+
 │
-├── index.html          # Main HTML file
+
+├── index.html          # Main HTML 
+
+file
+
 ├── badar 1.jpg        # Gallery images
+
 ├── badar 2.jpg        # Gallery images
+
 ├── badar 3.jpg        # Gallery images
+
 ├── badar 4.jpg        # Gallery images
+
 ├── badar 5.jpg        # Gallery images
-└── happy-birthday-to-you-370804.mp3  # Birthday music
+
+└── happy-birthday-to-you-370804.mp3  
+
+# Birthday music
 🎮 Pages Overview
 Landing Page: Beautiful welcome with animated title
 
